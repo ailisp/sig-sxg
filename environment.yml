@@ -1,0 +1,10 @@
+   name: nearsxg
+   channels:
+     - conda-forge
+     - defaults
+   dependencies:
+     - python=3.11
+     - nodejs=18.20.3
+     - pip
+     - pip:
+       - cryptography

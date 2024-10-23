@@ -1,3 +1,6 @@
 [submodule "cryptography"]
 	path = cryptography
 	url = https://github.com/ailisp/cryptography.git
+[submodule "webpackage"]
+	path = webpackage
+	url = https://github.com/ailisp/webpackage.git

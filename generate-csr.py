@@ -5,6 +5,8 @@ from cryptography import x509
 from cryptography.x509.oid import NameOID
 from cryptography.hazmat.bindings._rust import x509 as rust_x509
 import argparse
+import requests
+import base64
 
 def generate_key():
     return rsa.generate_private_key(
@@ -77,13 +79,15 @@ def main():
     # key = generate_key()
     # write_key_to_file(key, "./key.pem")
     key = load_key_from_file("./key.pem")
-    csr = generate_csr(key, args.country, args.state, args.city, args.organization, args.common_name, args.dns)
-    csr2 = generate_csr2(key, args.country, args.state, args.city, args.organization, args.common_name, args.dns)
-    write_csr_to_file(csr2, "./csr2.pem")
-    write_csr_to_file(csr, "./csr.pem")
+    # csr = generate_csr(key, args.country, args.state, args.city, args.organization, args.common_name, args.dns)
+    # csr2 = generate_csr2(key, args.country, args.state, args.city, args.organization, args.common_name, args.dns)
+    # write_csr_to_file(csr2, "./csr2.pem")
+    # write_csr_to_file(csr, "./csr.pem")
 
     csr_raw = generate_csr_raw(args.country, args.state, args.city, args.organization, args.common_name, args.dns).build_raw(key.public_key())
     sig = key.sign(csr_raw, padding.PKCS1v15(), hashes.SHA256())
+    # Above is a mock, real would be to POST to http://localhost:3001/sign
+    # requests.post("http://localhost:3001/sign", json={"path": "sxg", "account": "alice.near", "payload": base64.b64encode(sha256(csr_raw))})
     csr3 = rust_x509.pack_x509(csr_raw, sig)
     write_csr_to_file(csr3, "./csr3.pem")
 
